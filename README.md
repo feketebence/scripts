@@ -1,2 +1,37 @@
 # scripts
-Scripts for automating common stuff. Mostly sh
+This is (or will be) a collection of scripts that make my everyday workflow easier.
+
+Currently it's only for me, this is a public repository so I can download the scripts easily on any machine without logging in into GitHub. Maybe someday I will provide a more thorough `README` with detailed usage information of this repo.
+
+## Some rules for long term
+- All scripts should be POSIX compliant, but they can use other programs that are not [POSIX commands](https://en.wikipedia.org/wiki/List_of_POSIX_commands). I should try to stick to POSIX-compliance by using `#!/bin/sh`, but I'm obviously won't rewrite commands like `kubectl` in `sh`.
+- No hardcoding at all. Also try using as few environment variables as possible (e.g. from `$HOME/.env`).
+- Avoid storing sensitive data in plain text files. If a secret is used by any of the scripts, this secret should be kept in [`pass`](https://www.passwordstore.org/) and the user should be propted for a password.
+- If a script is calling another script or tool, the user should be informed about this, e.g. a message like `Executing command: command --long-option=something arg1` should be displayed.
+
+
+## Initial goals
+
+- [ ] Provide examples for common parts of an `sh` script like:
+    - [ ]  argument parsing (short options, long options and positional arguments)
+    - [ ]  printing which checks `--quiet`, `--verbose` or `--very-verbose` flags, think of them like log-levels
+    - [ ]  display quick usage docs with `--help`
+    - [ ]  display `script-name [options] args` one-liner description when the script exits with an error
+    - [ ]  pretty-printing setup with colors
+- [ ] Gather the above in a sample script that can be cloned and used as a template + oneliner `curl` command which downloads the template
+
+### Future script ideas:
+- [ ] Build a set of wrapper scripts around common `kubectl` + `awscli` commands that are context/profile aware:
+    - [ ] The profiles/contexts should be parsed from `~/.kube/config` or `~/.aws/config`
+    - [ ] These scripts should be chainable (by calling each other) to achieve something more complex, e.g:
+        - Getting a secret from a k8s secret-store in a `dev` cluster (`dev` is only a reference to a cluster-name or context that is a lot longer):
+            1. Check somehow if the user has access to `dev` cluster: check if the `$HOME/.aws/credentials` file contains a token OR use `aws sts get-caller-identity` OR something similar
+            2. If user has no access to `dev` cluster, acquire access
+            3. Switch k8s context
+            4. Get the secret using `kubectl get secret name-of-the-secret-store -o jsonpath='{.path.to.secret}' | base64 -d`
+        - All of these steps should be done by a wrapper script and the one should call the next one and pass the relevant args, like the short reference (`dev`) to the context.
+    - [ ] The point would be to have a **simple** oneliner for `kubectl` commands and the oneliner should be controllable easily with a positional argument that specifies the context in a short form (e.g `dev` instead of `very-long-k8s-dev-context-name-that-is-hard-to-remember`)
+     
+- [ ] Prepare variables for [hurl]() requests in version controlled API collections which are structured into folders
+    - TODO: describe the idea + given an example scenario      
+
