@@ -1,10 +1,11 @@
 # scripts
 This is (or will be) a collection of scripts that make my everyday workflow easier.
 
-Currently it's only for me, this is a public repository so I can download the scripts easily on any machine without logging in into GitHub. Maybe someday I will provide a more thorough `README` with detailed usage information of this repo.
+Currently it's only for me, this is a public repository so I can download the scripts easily on any machine without logging in into GitHub. 
+Maybe someday I will provide a more thorough `README` with detailed usage information of this repo.
 
 ## Some rules for long term
-- All scripts should be POSIX compliant, but they can use other programs that are not [POSIX commands](https://en.wikipedia.org/wiki/List_of_POSIX_commands). I should try to stick to POSIX-compliance by using `#!/bin/sh`, but I'm obviously won't rewrite commands like `kubectl` in `sh`.
+- All scripts should use `#!/bin/sh`. Avoiding bashisms will bring a lot of overhead a difficuly into scripting and I'm not planning using those scripts in environments that don't have `bash`.
 - No hardcoding at all. Also try using as few environment variables as possible (e.g. from `$HOME/.env`).
 - Avoid storing sensitive data in plain text files. If a secret is used by any of the scripts, this secret should be kept in [`pass`](https://www.passwordstore.org/) and the user should be propted for a password.
 - If a script is calling another script or tool, the user should be informed about this, e.g. a message like `Executing command: command --long-option=something arg1` should be displayed.
