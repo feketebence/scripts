@@ -5,7 +5,7 @@ Currently it's only for me, this is a public repository so I can download the sc
 Maybe someday I will provide a more thorough `README` with detailed usage information of this repo.
 
 ## Some rules for scripting
-- All scripts should use `#!/bin/sh`. Avoiding bashisms will bring a lot of overhead a difficuly into scripting and I'm not planning using those scripts in environments that don't have `bash`.
+- All scripts should use `#!/bin/bash`. Avoiding bashisms will bring a lot of overhead a difficuly into scripting and I'm not planning using those scripts in environments that don't have `bash`.
 - No hardcoding at all. Also try using as few environment variables as possible (e.g. from `$HOME/.env`).
 - Avoid storing sensitive data in plain text files. If a secret is used by any of the scripts, this secret should be kept in [`pass`](https://www.passwordstore.org/) and the user should be propted for a password.
 - If a script is calling another script or tool, the user should be informed about this, e.g. a message like `Executing command: command --long-option=something arg1` should be displayed.
