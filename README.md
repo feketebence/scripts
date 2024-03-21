@@ -35,9 +35,50 @@ Build a set of wrapper scripts around common `kubectl` + `awscli` commands that 
     - All of these steps should be done by a wrapper script and the one should call the next one and pass the relevant args, like the short reference (`dev`) to the context.
 - [ ] The point would be to have a **simple** oneliner for `kubectl` commands and the oneliner should be controllable easily with a positional argument that specifies the context in a short form (e.g `dev` instead of `very-long-k8s-dev-context-name-that-is-hard-to-remember`)
 
+---
+
 ### Prepare variables for `hurl` requests
 Tool which prepares variables for [hurl](https://hurl.dev/) requests in version controlled API collections which are structured into folders.
 `.env-.*` files in the file tree (from API collection repo root to 'leaf' folders) should be parsed for variables and those variables should be dumped into `request.variables` files inside 'leaf' folders of the folder structure.
 - [ ] sensitive data should be handled in a secure way (e.g. it should not come from `.env-.*` files, it should not be in the repo)
 - [ ] `request.variables` files should be added to `.gitignore` automatically 
 
+---
+
+### Ubuntu system setup script using Ansible playbooks
+A script which automatically installs and configures a bunch of tools that I use on Ubuntu.
+It should use Ansible recipes to install/configure a tool.
+
+As input, the script should use a Markdown file which describes the desired system configuration. As a first step, this file should be a checklist kinda thing which contains the list of software that I want to be installed.
+
+Example:
+```
+# Programming languages
+[x] java:21
+[ ] java:17
+
+# DevOps related
+## Containerization
+[x] Docker
+
+## Kubernetes related
+[x] kubectl
+[x] kind
+[ ] microk8s
+```
+
+Using the above example as input, the script would:
+- install Java JDK version 21 and configure stuff like `$JAVA_HOME`
+- skip the installation of Java 17 (as this component was not "ticked")
+- install docker-ce latest version and configure stuff
+- install kubectl
+- install kind and before doing so, install Go (+ do Go's config) which is a dependency of kind
+- skip the installation of microk8s
+
+Every line starting with a `[ ]` or `[x]` should represent an Ansible playbook which has to be executed.
+
+If Ansible is not installed, it should install it, as a very first step.
+
+Relates resources
+- [opensource.com - How to manage your workstation configuration with Ansible](https://opensource.com/article/18/3/manage-workstation-ansible)
+- [fromthekeyboard.com - Automating your development environment with Ansible](https://www.fromthekeyboard.com/automating-development-environment-ansible/)
